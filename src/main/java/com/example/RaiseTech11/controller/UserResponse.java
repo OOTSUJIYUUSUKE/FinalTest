@@ -1,15 +1,15 @@
 package com.example.RaiseTech11.controller;
 
-import com.example.RaiseTech11.entity.Users;
+import com.example.RaiseTech11.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public class UsersResponse {
+public class UserResponse {
     private final String name;
 
-    public UsersResponse(Users name) {
+    public UserResponse(User name) {
         this.name = name.getName();
     }
 }
