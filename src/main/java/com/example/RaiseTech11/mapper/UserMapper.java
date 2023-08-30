@@ -9,9 +9,14 @@ import java.util.Optional;
 
 @Mapper
 public interface UserMapper {
+
     public List<User> findAll();
+
     public Optional<User> findById(int id);
+
     public void insert(User user);
+
     public void update(int id, String name, String birthday);
+
     public void delete(int id);
 }

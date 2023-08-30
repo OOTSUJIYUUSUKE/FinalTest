@@ -15,12 +15,15 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @RestControllerAdvice
 public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
+
     @ExceptionHandler(value = ResourceNotFoundException.class)
     public ResponseEntity<Map<String, String>> handleNotResourceFound(ResourceNotFoundException e, HttpServletRequest request) {
         Map<String, String> body = Map.of(
@@ -38,14 +41,17 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
             HttpStatusCode status,
             WebRequest request
     ) {
-        List<String> errors = new ArrayList<>();
-        for (FieldError error : ex.getBindingResult().getFieldErrors()) {
-            errors.add(error.getField() + ": " + error.getDefaultMessage());
+        Map<String, String> invalidParam = new HashMap<>();
+        for (FieldError e : ex.getFieldErrors()) {
+            invalidParam.put(e.getField(), e.getDefaultMessage());
         }
-        for (ObjectError error : ex.getBindingResult().getGlobalErrors()) {
-            errors.add(error.getObjectName() + ": " + error.getDefaultMessage());
-        }
-        ResponseError responseError = new ResponseError(status.value(), ex.getMessage());
-        return handleExceptionInternal(ex, responseError, headers, status, request);
+
+        Map<String, Object> body = Map.of(
+                "timestamp", ZonedDateTime.now().toString(),
+                "status", String.valueOf(HttpStatus.BAD_REQUEST.value()),
+                "error", HttpStatus.BAD_REQUEST.getReasonPhrase(),
+                "message", invalidParam
+        );
+        return ResponseEntity.badRequest().body(body);
     }
 }

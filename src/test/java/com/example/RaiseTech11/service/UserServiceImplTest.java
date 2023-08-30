@@ -24,19 +24,21 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class UserServiceImplTest {
+
     @InjectMocks
     UserServiceImpl userServiceImpl;
     @Mock
     UserMapper userMapper;
+
     @Test
     public void 全てのユーザーの情報を返すこと() {
-        List<User> user = new ArrayList<>();
-        user.add(new User(1, "田中太郎", "19901010"));
-        user.add(new User(2, "加藤大", "19951010"));
-        user.add(new User(3, "斉藤直樹", "19801010"));
-        doReturn(user).when(userMapper).findAll();
+        List<User> users = new ArrayList<>();
+        users.add(new User(1, "田中太郎", "19901010"));
+        users.add(new User(2, "加藤大", "19951010"));
+        users.add(new User(3, "斉藤直樹", "19801010"));
+        doReturn(users).when(userMapper).findAll();
         List<User> actual = userServiceImpl.findAll();
-        assertEquals(actual, user);
+        assertEquals(actual, users);
         verify(userMapper, times(1)).findAll();
     }
 
@@ -61,10 +63,7 @@ class UserServiceImplTest {
         CreateForm form = new CreateForm("大辻友佑", "19950221");
         User user = new User(form.getName(), form.getBirthday());
         doNothing().when(userMapper).insert(user);
-        //bindingResultがnullだとエラーが出るので以下2行でインスタンス生成をする。
-        User examapleUser = new User();
-        BindingResult bindingResult = new DataBinder(examapleUser).getBindingResult();
-        userServiceImpl.create(form.getName(), form.getBirthday(), bindingResult);
+        userServiceImpl.create(form.getName(), form.getBirthday());
         verify(userMapper, times(1)).insert(user);
     }
 
@@ -72,10 +71,7 @@ class UserServiceImplTest {
     public void 指定したIDのデータを入力データで更新ができること() {
         doReturn(Optional.of(new User("田中太郎", "19901010"))).when(userMapper).findById(1);
         User user = new User(1, "加藤大", "19951010");
-        //bindingResultがnullだとエラーが出るので以下2行でインスタンス生成をする。
-        User examapleUser = new User();
-        BindingResult bindingResult = new DataBinder(examapleUser).getBindingResult();
-        userServiceImpl.update(1, user.getName(), user.getBirthday(), bindingResult);
+        userServiceImpl.update(1, user.getName(), user.getBirthday());
         verify(userMapper, times(1)).findById(1);
         verify(userMapper, times(1)).update(1, user.getName(), user.getBirthday());
     }
@@ -90,7 +86,6 @@ class UserServiceImplTest {
     @Test
     void 指定したIDのデータが削除できること() {
         doReturn(Optional.of(new User("田中太郎", "19901010"))).when(userMapper).findById(1);
-        User deletedUser = userServiceImpl.findById(1);
         userServiceImpl.delete(1);
         verify(userMapper, times(1)).findById(1);
         verify(userMapper, times(1)).delete(1);
