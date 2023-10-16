@@ -1,0 +1,10 @@
+users:
+  - id: 1
+    name: "大辻 友佑"
+    birthday: "19950221"
+  - id: 2
+    name: "宇野 香織"
+    birthday: "19860722"
+  - id: 3
+    name: "鈴木 佳史"
+    birthday: "19641005"

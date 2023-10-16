@@ -1,0 +1,13 @@
+users:
+  - id: 1
+    name: "福田 圭"
+    birthday: "19360801"
+  - id: 2
+    name: "宇野 香織"
+    birthday: "19860722"
+  - id: 3
+    name: "鈴木 佳史"
+    birthday: "19641005"
+  - id: 4
+    name: "長谷川 晃義"
+    birthday: "19390128"
