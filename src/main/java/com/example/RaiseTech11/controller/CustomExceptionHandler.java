@@ -34,6 +34,7 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
         );
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
     }
+
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(
             MethodArgumentNotValidException ex,

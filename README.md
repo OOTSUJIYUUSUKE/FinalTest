@@ -1,10 +1,12 @@
 # ユーザー管理アプリ
 
 ## アプリ概要
+
 - ユーザーデータベースを管理するREST API
 - JUnitを用いたテストコードを実装中
 
 ## ユーザー情報
+
 | 項目       | 型      | 備考               |
 |----------|--------|------------------|
 | ID       | int    | オートインクリメント、DB主キー |
@@ -12,6 +14,7 @@
 | birthday | String |                  |
 
 ## 各クラスメソッド、単体テスト確認事項(随時追加予定)
+
 <details><summary>Mapperクラス</summary><div>
 
 | メソッド                                              | 概要                       | 単体テスト確認事項                                                 |
@@ -36,7 +39,20 @@
 
 </div></details>
 
+<details><summary>Controllerクラス</summary><div>
+
+| メソッド                                                                                                                                | 概要                            | 単体テスト確認事項                  |
+|-------------------------------------------------------------------------------------------------------------------------------------|-------------------------------|----------------------------|
+| List<UserResponse> findAll()                                                                                                        | 全てのユーザーの情報を返す                 | - 全てのユーザーの情報を返すこと          |
+| UserResponse findById(@RequestParam(value = "id") int id)                                                                           | 指定したIDのユーザーデータを返す             | - 指定したIDのユーザーデータを返すこと      |
+| ResponseEntity<Map<String, String>> createUser (@RequestBody @Validated CreateForm form, UriComponentsBuilder uriComponentsBuilder) | オートインクリメントで取ってきたIDに入力データを登録する | - 新規ユーザーの登録ができること          |
+| ResponseEntity<Map<String, String>> patchUser (@PathVariable("id")int id, @RequestBody @Validated UpdateForm form)                  | 指定したIDのデータを入力データで更新する         | - 指定したIDのデータを入力データで更新できること |
+| ResponseEntity<Map<String, String>> deleteUser(@PathVariable("id")int id)                                                           | 指定したIDのデータを削除する               | - 指定したIDのデータが削除できること       |
+
+</div></details>
+
 ## ローカルでのアプリケーション起動方法
+
 1.自分のPCにリポジトリをgit cloneする  
 `git clone https://github.com/OOTSUJIYUUSUKWE/FinalTest.git `
 
@@ -56,6 +72,7 @@ URLの共通部分：http://localhost:8080
 5.結果を確認
 
 ## API仕様
+
 | Request | メソッドcurlコマンド例                                                                                                                                                                                                                                                                                                                              |     |
 |---------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----|
 | GET     | List\<UserResponse> findAll() <br> `curl -X GET 'http://localhost:8080/users'`                                                                                                                                                                                                                                                             |     |
